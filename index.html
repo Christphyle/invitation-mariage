@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400&display=swap" rel="stylesheet">
   <style>
     body {
-      margin: 0;
+      margin: 10px;     
       background: url('fond-enveloppes.png') no-repeat center center / cover;
       display: flex;
       align-items: center;
@@ -40,7 +40,7 @@
 
     .enveloppe-fermee {
       transform: scale(1.2);
-      
+
     }
 
     .formulaire {
@@ -149,7 +149,7 @@
       transition: opacity 1s ease;
       text-align: center;
       color: #333;
-      margin: 0 auto;
+      margin: auto clamp(10px, 3vw, 30px);
     }
 
     .carte.visible {
@@ -290,12 +290,12 @@
     <div class="monogram">
       <img src="entete.png" alt="En-tête de la carte">
     </div>
-    <h2>Дорогие <span id="destinataire">папа и мама</span>!</h2>
+    <h2>Привествуем, <span id="destinataire"> папа и мама</span> !</h2>
     <p>Мы с огромным удовольствием приглашаем вас провести этот незабываемый день вместе с нами!</p>
     <h3>05 Июля</h3>
     <p>Церемония бракосочетания начинается в 14:30<br>в Регистрационном зале<br>
       <a href="https://yandex.ru/maps/org/dvorets_tsarya_alekseya_mikhaylovicha_romanova/1241907569/?ll=37.656963%2C55.655757&z=16">
-        Двореца царя Алексея Михайловича Романова
+        Дворца царя Алексея Михайловича Романова
       </a>
     </p>
     <p>Праздничный ужин в 16:00<br>в<br>
@@ -304,7 +304,7 @@
       </a>
     </p>
     <div class="highlight">ДРЕСС-КОД</div>
-    <p>Мы будем признательны, если вы сможете подчеркнуть торжество этому праздничному тону</p>
+    <p>Мы будем признательны, если вы сможете поддержать цветовую гамму нашего торжества</p>
     <div class="dress-code-colors">
       <span class="color-circle" aria-label="Цвет дресс-кода: золотисто-оливковый (#7C7107)"></span>
       <span class="color-circle" aria-label="Цвет дресс-кода: серо-зеленый (#8B9266)"></span>
