@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Приглашение на свадьбу</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: url('fond-enveloppes.png') no-repeat center center / cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container {
+      position: relative;
+      width: 90vw;
+      max-width: 450px;
+      text-align: center;
+      z-index: 3;
+    }
+
+    .enveloppe-fermee,
+    .enveloppe-ouverte {
+      width: 100%;
+      height: auto;
+      display: none;
+    }
+
+    .enveloppe-fermee.active,
+    .enveloppe-ouverte.active {
+      display: block;
+    }
+
+    .enveloppe-fermee {
+      transform: scale(1.2);
+      
+    }
+
+    .formulaire {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 4;
+      text-align: center;
+      width: 80%;
+      max-width: 300px;
+    }
+
+    .formulaire label {
+      display: block;
+      margin-bottom: 0.3em;
+      font-size: 0.9em;
+      color: #333;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .formulaire input {
+      width: 50%;
+      padding: 0.3em;
+      margin-bottom: 0.3em;
+      border: none;
+      background: transparent;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.9em;
+    }
+
+    .formulaire p {
+      font-size: 0.8em;
+      color: #333;
+      margin: 0.3em 0;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .btn-ouvrir {
+      margin-top: 1em;
+      padding: 1em;
+      border: none;
+      border-radius: 30px;
+      background: #ff6f61;
+      color: white;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      font-family: 'Playfair Display', serif;
+    }
+
+    .btn-ouvrir:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .fond-carte-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.1);
+      width: 90vw;
+      max-width: 450px;
+      height: auto;
+      overflow: hidden;
+      z-index: 4;
+      transition: transform 5s ease, opacity 0.1s ease;
+      opacity: 0;
+      visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fond-carte-wrapper.visible {
+      transform: translate(-50%, -50%) scale(1);
+      width: 100vw;
+      height: 100vh;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .fond-carte {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .carte {
+      position: relative;
+      width: 90%;
+      max-width: 400px;
+      height: auto;
+      max-height: 80vh;
+      background: url('floral-border.png') no-repeat center center / cover, #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.4);
+      padding: 2em;
+      box-sizing: border-box;
+      z-index: 5;
+      overflow: auto;
+      display: none;
+      opacity: 0;
+      transition: opacity 1s ease;
+      text-align: center;
+      color: #333;
+      margin: 0 auto;
+    }
+
+    .carte.visible {
+      display: block;
+      opacity: 1;
+    }
+
+    .carte .monogram {
+      margin-bottom: 1em;
+      text-align: center;
+    }
+
+    .carte .monogram img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .carte h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2em;
+      color: #d4af37;
+      margin: 0.5em 0;
+    }
+
+    .carte h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2em;
+      color: #333;
+      margin: 0.5em 0;
+    }
+
+    .carte p {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1em;
+      margin: 0.5em 0;
+      line-height: 1.5;
+    }
+
+    .carte a {
+      color: #333;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .carte a:hover {
+      text-decoration: underline;
+    }
+
+    .carte .highlight {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2em;
+      color: #333;
+      margin: 1em 0;
+      text-transform: uppercase;
+    }
+
+    .carte .signature {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2em;
+      color: #d4af37;
+      margin-top: 1em;
+      font-style: italic;
+    }
+
+    .carte .dress-code-colors {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 0.5em;
+    }
+
+    .carte .dress-code-colors .color-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .carte .dress-code-colors .color-circle:nth-child(1) {
+      background-color: #7C7107;
+    }
+
+    .carte .dress-code-colors .color-circle:nth-child(2) {
+      background-color: #8B9266;
+    }
+
+    .carte .dress-code-colors .color-circle:nth-child(3) {
+      background-color: #4B512F;
+    }
+
+    @media (max-width: 350px) {
+      .carte {
+        padding: 1.5em;
+      }
+      .carte h2 {
+        font-size: 1em;
+      }
+      .carte h3 {
+        font-size: 1.5em;
+      }
+      .carte p {
+        font-size: 0.9em;
+      }
+      .carte .highlight {
+        font-size: 1em;
+      }
+      .carte .dress-code-colors .color-circle {
+        width: 25px;
+        height: 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <img src="enveloppe-fermee.png" alt="Закрытый конверт с приглашением на свадьбу" class="enveloppe-fermee active" id="fermee">
+  <img src="enveloppe-ouverte.png" alt="Открытый конверт с приглашением на свадьбу" class="enveloppe-ouverte" id="ouverte">
+  
+  <div class="formulaire" id="formulaire">
+    <p>Чтобы открыть пишите</p>
+    <label for="nomInvite">Ваше имя:</label>
+    <input type="text" id="nomInvite" placeholder="Введите ваше имя" required>
+    <label for="nomCompagnon">Имя супруга:</label>
+    <input type="text" id="nomCompagnon" placeholder="Введите имя супруга">
+    <br/><br/><br/><br/><br/><br/><p>Если только вы, то можете не писать имя супруга</p>
+  </div>
+  
+  <button class="btn-ouvrir" id="ouvrirBtn" aria-label="Открыть приглашение на свадьбу" disabled>Открыть</button>
+</div>
+
+<div class="fond-carte-wrapper" id="fondCarteWrapper">
+  <img src="fond-carte.jpg" alt="Декоративный фон приглашения" class="fond-carte" id="fondCarteImg">
+  
+  <div class="carte" id="carte">
+    <div class="monogram">
+      <img src="entete.png" alt="En-tête de la carte">
+    </div>
+    <h2>Дорогие <span id="destinataire">папа и мама</span>!</h2>
+    <p>Мы с огромным удовольствием приглашаем вас провести этот незабываемый день вместе с нами!</p>
+    <h3>05 Июля</h3>
+    <p>Церемония бракосочетания начинается в 14:30<br>в Регистрационном зале<br>
+      <a href="https://yandex.ru/maps/org/dvorets_tsarya_alekseya_mikhaylovicha_romanova/1241907569/?ll=37.656963%2C55.655757&z=16">
+        Двореца царя Алексея Михайловича Романова
+      </a>
+    </p>
+    <p>Праздничный ужин в 16:00<br>в<br>
+      <a href="https://yandex.ru/maps/org/loft_hall/1588588165/?ll=37.653568%2C55.713071&z=16">
+        Loft Hall CONTRABANDA
+      </a>
+    </p>
+    <div class="highlight">ДРЕСС-КОД</div>
+    <p>Мы будем признательны, если вы сможете подчеркнуть торжество этому праздничному тону</p>
+    <div class="dress-code-colors">
+      <span class="color-circle" aria-label="Цвет дресс-кода: золотисто-оливковый (#7C7107)"></span>
+      <span class="color-circle" aria-label="Цвет дресс-кода: серо-зеленый (#8B9266)"></span>
+      <span class="color-circle" aria-label="Цвет дресс-кода: темно-зеленый (#4B512F)"></span>
+    </div>
+    <div class="signature">Крис и Олеся</div>
+  </div>
+</div>
+
+<audio id="clickSound" src="click-sound.mp3"></audio>
+<audio id="backgroundSound" src="background-sound.mp3" loop></audio>
+
+<script>
+  function sanitizeInput(input) {
+    return input.replace(/[<>&"']/g, '').trim().substring(0, 50);
+  }
+
+  const btn = document.getElementById('ouvrirBtn');
+  const nomInviteInput = document.getElementById('nomInvite');
+  const nomCompagnonInput = document.getElementById('nomCompagnon');
+  const formulaire = document.getElementById('formulaire');
+  const fermee = document.getElementById('fermee');
+  const ouverte = document.getElementById('ouverte');
+  const fondCarteWrapper = document.getElementById('fondCarteWrapper');
+  const fondCarteImg = document.getElementById('fondCarteImg');
+  const carte = document.getElementById('carte');
+  const destinataire = document.getElementById('destinataire');
+  const clickSound = document.getElementById('clickSound');
+  const backgroundSound = document.getElementById('backgroundSound');
+
+  [fermee, ouverte, fondCarteImg].forEach(img => {
+    img.onerror = () => {
+      console.error(`Erreur de chargement de l'image : ${img.src}`);
+      img.src = 'fallback-image.png';
+    };
+    img.onload = () => {
+      console.log(`Image chargée : ${img.src}`);
+    };
+  });
+
+  [clickSound, backgroundSound].forEach(audio => {
+    audio.onerror = () => {
+      console.error(`Erreur de chargement du fichier audio : ${audio.src}`);
+    };
+    audio.onloadeddata = () => {
+      console.log(`Fichier audio chargé : ${audio.src}`);
+    };
+  });
+
+  function updateButtonState() {
+    const nomInvite = sanitizeInput(nomInviteInput.value);
+    btn.disabled = !nomInvite;
+  }
+
+  updateButtonState();
+
+  nomInviteInput.addEventListener('input', updateButtonState);
+  nomInviteInput.addEventListener('change', updateButtonState);
+  nomCompagnonInput.addEventListener('input', updateButtonState);
+  nomCompagnonInput.addEventListener('change', updateButtonState);
+
+  btn.addEventListener('click', () => {
+    if (btn.disabled) return;
+
+    clickSound.play().catch(error => {
+      console.error("Erreur lors de la lecture du son de clic :", error);
+    });
+
+    const nomInvite = sanitizeInput(nomInviteInput.value);
+    const nomCompagnon = sanitizeInput(nomCompagnonInput.value);
+
+    if (nomCompagnon) {
+      destinataire.textContent = `${nomInvite} и ${nomCompagnon}`;
+    } else {
+      destinataire.textContent = `${nomInvite}`;
+    }
+
+    formulaire.style.display = 'none';
+    fermee.style.display = 'none';
+    ouverte.style.display = 'block';
+
+    backgroundSound.play().catch(error => {
+      console.error("Erreur lors de la lecture du son de fond :", error);
+    });
+
+    setTimeout(() => {
+      fondCarteWrapper.classList.add('visible');
+      
+      setTimeout(() => {
+        carte.classList.add('visible');
+      }, 5500);
+    }, 100);
+
+    btn.style.display = 'none';
+  });
+</script>
+
+</body>
+</html>
