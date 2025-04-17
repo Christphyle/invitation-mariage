@@ -402,5 +402,18 @@
   });
 </script>
 
+  <script>
+  function adjustRootFontSize() {
+    const baseWidth = 375; // largeur de référence (ex. iPhone)
+    const currentWidth = window.innerWidth;
+    const scale = currentWidth / baseWidth;
+    document.documentElement.style.fontSize = `${Math.min(scale, 1.2)}em`;
+  }
+
+  window.addEventListener('resize', adjustRootFontSize);
+  window.addEventListener('DOMContentLoaded', adjustRootFontSize);
+</script>
+
+
 </body>
 </html>
