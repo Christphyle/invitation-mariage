@@ -414,34 +414,5 @@
   window.addEventListener('DOMContentLoaded', adjustRootFontSize);
 </script>
 
-<script>
-  function centerElement(el) {
-    if (!el) return;
-    const viewportHeight = window.innerHeight;
-    const viewportWidth = window.innerWidth;
-    const rect = el.getBoundingClientRect();
-
-    const top = Math.max((viewportHeight - rect.height) / 2, 0);
-    const left = Math.max((viewportWidth - rect.width) / 2, 0);
-
-    el.style.position = 'absolute';
-    el.style.top = `${top}px`;
-    el.style.left = `${left}px`;
-  }
-
-  function centerAll() {
-    // Liste des éléments à centrer
-    const elementsToCenter = [
-      document.getElementById('carte'),
-      document.getElementById('fondCarteWrapper'),
-      document.getElementById('formulaire')
-    ];
-    elementsToCenter.forEach(el => centerElement(el));
-  }
-
-  window.addEventListener('load', centerAll);
-  window.addEventListener('resize', centerAll);
-</script>
-
 </body>
 </html>
