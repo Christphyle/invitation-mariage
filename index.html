@@ -290,7 +290,7 @@
     <div class="monogram">
       <img src="entete.png" alt="En-tête de la carte">
     </div>
-    <h2>Привествуем, <span id="destinataire"> папа и мама</span> !</h2>
+    <h2>Приветствуем, <span id="destinataire"> папа и мама</span> !</h2>
     <p>Мы с огромным удовольствием приглашаем вас провести этот незабываемый день вместе с нами!</p>
     <h3>05 Июля</h3>
     <p>Церемония бракосочетания начинается в 14:30<br>в Регистрационном зале<br>
@@ -414,6 +414,34 @@
   window.addEventListener('DOMContentLoaded', adjustRootFontSize);
 </script>
 
+<script>
+  function centerElement(el) {
+    if (!el) return;
+    const viewportHeight = window.innerHeight;
+    const viewportWidth = window.innerWidth;
+    const rect = el.getBoundingClientRect();
+
+    const top = Math.max((viewportHeight - rect.height) / 2, 0);
+    const left = Math.max((viewportWidth - rect.width) / 2, 0);
+
+    el.style.position = 'absolute';
+    el.style.top = `${top}px`;
+    el.style.left = `${left}px`;
+  }
+
+  function centerAll() {
+    // Liste des éléments à centrer
+    const elementsToCenter = [
+      document.getElementById('carte'),
+      document.getElementById('fondCarteWrapper'),
+      document.getElementById('formulaire')
+    ];
+    elementsToCenter.forEach(el => centerElement(el));
+  }
+
+  window.addEventListener('load', centerAll);
+  window.addEventListener('resize', centerAll);
+</script>
 
 </body>
 </html>
